@@ -1,5 +1,6 @@
 [build]
   functions = "netlify/functions"
+  command = "pip install -r requirements.txt && python -m flask run"
 
 [dev]
   functions = "netlify/functions"
