@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Language My Compiler</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            background-color: #f9f9f9;
+        }
+
+        textarea {
+            width: 100%;
+            height: 200px;
+            margin-bottom: 20px;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .output {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #e9ecef;
+            border: 1px solid #ddd;
+            white-space: pre-wrap; /* Keeps line breaks in text */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Simple Compiler</h1>
+        <textarea id="codeInput" placeholder="Enter your code here..."></textarea>
+        <button onclick="sendCode()">Run Code</button>
+
+        <h2>Output:</h2>
+        <div class="output" id="output"></div>
+    </div>
+
+    <script>
+        function sendCode() {
+            const code = document.getElementById('codeInput').value;
+
+            fetch('/api/data', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ data: code }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    document.getElementById('output').innerText = data.error;
+                } else {
+                    return fetch('/api/data2');
+                }
+            })
+            .then(response => {
+                if (response) {
+                    return response.json();
+                }
+            })
+            .then(outputData => {
+                if (outputData) {
+                    document.getElementById('output').innerText = outputData.output.join('\n');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                document.getElementById('output').innerText = 'An error occurred while processing your request.';
+            });
+        }
+    </script>
+</body>
+</html>
